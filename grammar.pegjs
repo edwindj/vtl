@@ -1,20 +1,42 @@
 
-
 start
-  = expression
+  = (expression _ ";"?)*
 
  expression
-  = Assignment
+  = CompoundExpression "+" expression
+  / CompoundExpression "-" expression
+  / CompoundExpression "*" expression
+  / CompoundExpression "/" expression
+  / CompoundExpression
 
- Assignment 
-  = identifier ":=" DatasetExpressionResult
+CompoundExpression
+  = FunctionCall
+  / Assignment
+  / Literal
+  / "(" expression")"
+  / Column
+  / ID
 
+Assignment 
+  = ID ":=" expression
 
-Dataset
-  = identifier
-  
-DatasetExpressionResult
+Comparison
+  = ID "<" expression
+
+Column
+  = ID "." ID
+
+Literal
   = "1"
+ 
+FunctionCall
+  = ID "(" [expression ( "," expression)*] ")"
 
- identifier
+ID
   = [A-z]+
+
+_
+  = [\s]*
+
+WS 
+  = [\s]+
