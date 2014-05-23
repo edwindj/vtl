@@ -1,23 +1,21 @@
 
 start
-  = (expression _ ";"?)*
+  = (_ expression _ ";"?)*
 
  expression
   = Comparison
   / CalculusExpression
 
 CalculusExpression
-  = CompoundExpression _ "+" _ expression
-  / CompoundExpression _ "-" _ expression
-  / CompoundExpression _ "*" _ expression
-  / CompoundExpression _ "/" _ expression
+  = CompoundExpression _ [+-] _ expression
+  / CompoundExpression _ [*/] _ expression
   / CompoundExpression
 
 CompoundExpression
   = FunctionCall
   / Assignment
   / Literal
-  / "(" expression")"
+  / "("_ expression _")"
   / Column
   / ID
 
@@ -25,26 +23,26 @@ Assignment
   = ID ":=" expression
 
 Comparison
-  = CalculusExpression "<=" CalculusExpression
-  / CalculusExpression "<" CalculusExpression
-  / CalculusExpression ">=" CalculusExpression
-  / CalculusExpression ">" CalculusExpression
-  / CalculusExpression "==" CalculusExpression
+  = CalculusExpression _ "<=" _ CalculusExpression
+  / CalculusExpression _ "<"  _ CalculusExpression
+  / CalculusExpression _ ">=" _ CalculusExpression
+  / CalculusExpression _ ">"  _ CalculusExpression
+  / CalculusExpression _ "==" _ CalculusExpression
 
 Column
   = ID "." ID
 
 Literal
-  = "1"
+  = $[0-9]+
  
 FunctionCall
   = ID "(" [expression ( "," expression)*] ")"
 
 ID
-  = [A-z]+
+  = $[A-z]+
 
 _
-  = [\s]*
+  = $[ ]*
 
 WS 
-  = [\s]+
+  = $[ ]+
