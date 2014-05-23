@@ -3,10 +3,14 @@ start
   = (expression _ ";"?)*
 
  expression
-  = CompoundExpression "+" expression
-  / CompoundExpression "-" expression
-  / CompoundExpression "*" expression
-  / CompoundExpression "/" expression
+  = Comparison
+  / CalculusExpression
+
+CalculusExpression
+  = CompoundExpression _ "+" _ expression
+  / CompoundExpression _ "-" _ expression
+  / CompoundExpression _ "*" _ expression
+  / CompoundExpression _ "/" _ expression
   / CompoundExpression
 
 CompoundExpression
@@ -21,7 +25,11 @@ Assignment
   = ID ":=" expression
 
 Comparison
-  = ID "<" expression
+  = CalculusExpression "<=" CalculusExpression
+  / CalculusExpression "<" CalculusExpression
+  / CalculusExpression ">=" CalculusExpression
+  / CalculusExpression ">" CalculusExpression
+  / CalculusExpression "==" CalculusExpression
 
 Column
   = ID "." ID
